@@ -10,9 +10,9 @@
 		FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */; };
 		FAAB4F632A3E0E8100453F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */; };
 		FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F642A3E0E8100453F57 /* ViewController.swift */; };
-		FAAB4F682A3E0E8100453F57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAB4F662A3E0E8100453F57 /* Main.storyboard */; };
 		FAAB4F6A2A3E0E8600453F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAAB4F692A3E0E8600453F57 /* Assets.xcassets */; };
 		FAAB4F6D2A3E0E8600453F57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAB4F6B2A3E0E8600453F57 /* LaunchScreen.storyboard */; };
+		FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +20,10 @@
 		FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FAAB4F642A3E0E8100453F57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FAAB4F672A3E0E8100453F57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FAAB4F692A3E0E8600453F57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAAB4F6C2A3E0E8600453F57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAAB4F6E2A3E0E8600453F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,10 +59,10 @@
 				FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */,
 				FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */,
 				FAAB4F642A3E0E8100453F57 /* ViewController.swift */,
-				FAAB4F662A3E0E8100453F57 /* Main.storyboard */,
 				FAAB4F692A3E0E8600453F57 /* Assets.xcassets */,
 				FAAB4F6B2A3E0E8600453F57 /* LaunchScreen.storyboard */,
 				FAAB4F6E2A3E0E8600453F57 /* Info.plist */,
+				FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */,
 			);
 			path = PodCastApp;
 			sourceTree = "<group>";
@@ -127,7 +127,6 @@
 			files = (
 				FAAB4F6D2A3E0E8600453F57 /* LaunchScreen.storyboard in Resources */,
 				FAAB4F6A2A3E0E8600453F57 /* Assets.xcassets in Resources */,
-				FAAB4F682A3E0E8100453F57 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +139,7 @@
 			files = (
 				FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */,
 				FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */,
+				FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */,
 				FAAB4F632A3E0E8100453F57 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +147,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FAAB4F662A3E0E8100453F57 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FAAB4F672A3E0E8100453F57 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FAAB4F6B2A3E0E8600453F57 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -216,7 +208,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -270,7 +262,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -291,7 +283,6 @@
 				INFOPLIST_FILE = PodCastApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -318,7 +309,6 @@
 				INFOPLIST_FILE = PodCastApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
