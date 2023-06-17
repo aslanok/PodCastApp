@@ -13,6 +13,8 @@
 		FAAB4F6A2A3E0E8600453F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAAB4F692A3E0E8600453F57 /* Assets.xcassets */; };
 		FAAB4F6D2A3E0E8600453F57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAB4F6B2A3E0E8600453F57 /* LaunchScreen.storyboard */; };
 		FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */; };
+		FAAB4F782A3E5A2200453F57 /* PodcastSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */; };
+		FAAB4F7B2A3E5A8000453F57 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		FAAB4F6C2A3E0E8600453F57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAAB4F6E2A3E0E8600453F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastSearchController.swift; sourceTree = "<group>"; };
+		FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,8 @@
 		FAAB4F5F2A3E0E8100453F57 /* PodCastApp */ = {
 			isa = PBXGroup;
 			children = (
+				FAAB4F792A3E5A7500453F57 /* Models */,
+				FAAB4F762A3E5A1100453F57 /* Controllers */,
 				FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */,
 				FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */,
 				FAAB4F642A3E0E8100453F57 /* ViewController.swift */,
@@ -65,6 +71,22 @@
 				FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */,
 			);
 			path = PodCastApp;
+			sourceTree = "<group>";
+		};
+		FAAB4F762A3E5A1100453F57 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		FAAB4F792A3E5A7500453F57 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +159,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAAB4F782A3E5A2200453F57 /* PodcastSearchController.swift in Sources */,
 				FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */,
+				FAAB4F7B2A3E5A8000453F57 /* Podcast.swift in Sources */,
 				FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */,
 				FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */,
 				FAAB4F632A3E0E8100453F57 /* SceneDelegate.swift in Sources */,

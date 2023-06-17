@@ -20,13 +20,12 @@ class MainTabBarController : UITabBarController {
     
     func setUpViewControllers(){
         viewControllers = [
+            generateNavigationController(with: "Search", and: UIImage(named: "search"), vc: PodcastSearchController()),
             generateNavigationController(with: "Favorites", and: UIImage(named: "favorites"), vc: ViewController()),
-            generateNavigationController(with: "Search", and: UIImage(named: "search"), vc: ViewController()),
-            generateNavigationController(with: "Downloads", and: UIImage(named: "downloads"), vc: ViewController()),
+            generateNavigationController(with: "Downloads", and: UIImage(named: "downloads"), vc: ViewController())
         ]
     }
     
-   
     private func generateNavigationController(with title : String, and image : UIImage?, vc : UIViewController) -> UIViewController {
         let nav = UINavigationController(rootViewController: vc)
         //nav.navigationBar.prefersLargeTitles = true //UINavigationBar.appearance().prefersLargeTitles = true
