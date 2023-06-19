@@ -15,7 +15,7 @@ class PodcastSearchController : UITableViewController, UISearchBarDelegate {
         Podcast(trackName: "Some Podcast", artistName: "Some Author")
     ]
     
-    let cellId = "cellId"
+    let cellId = "PodcastCell"
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -33,30 +33,15 @@ class PodcastSearchController : UITableViewController, UISearchBarDelegate {
     }
 
     fileprivate func setUpTableView(){
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(PodcastCell.self, forCellReuseIdentifier: cellId)
+        //tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
-        //let url = "https://itunes.apple.com/search?term=\(searchText)"
-        let url = "https://itunes.apple.com/search"
-        let parameters = ["term":searchText, "media": "podcast"]
-        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { dataResponse in
-            if let err = dataResponse.error {
-                print("failed to contact to yahoo : \(err)")
-                return
-            }
-            
-            guard let data = dataResponse.data else { return }
-            do {
-                let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
-                self.podcasts = searchResult.results
-                self.tableView.reloadData()
-            } catch let decodeErr {
-                print("failed to decode ", decodeErr)
-            }
+        APIService.shared.fetchPodcasts(searchText: searchText) { podcastList in
+            self.podcasts = podcastList
+            self.tableView.reloadData()
         }
-        // later implemetation of iTunes API
     }
     
     
@@ -64,12 +49,21 @@ class PodcastSearchController : UITableViewController, UISearchBarDelegate {
         return podcasts.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? PodcastCell else {
+            return UITableViewCell()
+        }
         let podcast = self.podcasts[indexPath.row]
+        cell.podcast = podcast
+        /*
         cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
         cell.textLabel?.numberOfLines = -1
         cell.imageView?.image = UIImage(named: "appicon")
+         */
         return cell
     }
     

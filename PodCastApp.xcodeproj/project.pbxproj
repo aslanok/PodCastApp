@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		334E3E12921CB022EC31AD37 /* Pods_PodCastApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C3B3F7D04D851EBFFA69385 /* Pods_PodCastApp.framework */; };
 		FA018E832A3F0EF10009AD7A /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA018E822A3F0EF10009AD7A /* SearchResults.swift */; };
+		FA429DAD2A40D96600DF112D /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA429DAC2A40D96600DF112D /* APIService.swift */; };
+		FA429DB22A40DF7100DF112D /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA429DB12A40DF7100DF112D /* PodcastCell.swift */; };
 		FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */; };
 		FAAB4F632A3E0E8100453F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */; };
 		FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F642A3E0E8100453F57 /* ViewController.swift */; };
@@ -24,6 +26,8 @@
 		20B5CDBE7BC2F00335DBBEAE /* Pods-PodCastApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodCastApp.debug.xcconfig"; path = "Target Support Files/Pods-PodCastApp/Pods-PodCastApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A6010BF491169EF6B78F5E2D /* Pods-PodCastApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodCastApp.release.xcconfig"; path = "Target Support Files/Pods-PodCastApp/Pods-PodCastApp.release.xcconfig"; sourceTree = "<group>"; };
 		FA018E822A3F0EF10009AD7A /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
+		FA429DAC2A40D96600DF112D /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		FA429DB12A40DF7100DF112D /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
 		FAAB4F5D2A3E0E8100453F57 /* PodCastApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodCastApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +69,22 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		FA429DAB2A40D95600DF112D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				FA429DAC2A40D96600DF112D /* APIService.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		FA429DAE2A40DEF900DF112D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA429DB12A40DF7100DF112D /* PodcastCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		FAAB4F542A3E0E8100453F57 = {
 			isa = PBXGroup;
 			children = (
@@ -86,7 +106,9 @@
 		FAAB4F5F2A3E0E8100453F57 /* PodCastApp */ = {
 			isa = PBXGroup;
 			children = (
+				FA429DAB2A40D95600DF112D /* API */,
 				FAAB4F792A3E5A7500453F57 /* Models */,
+				FA429DAE2A40DEF900DF112D /* Views */,
 				FAAB4F762A3E5A1100453F57 /* Controllers */,
 				FAAB4F602A3E0E8100453F57 /* AppDelegate.swift */,
 				FAAB4F622A3E0E8100453F57 /* SceneDelegate.swift */,
@@ -236,6 +258,8 @@
 				FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */,
 				FA018E832A3F0EF10009AD7A /* SearchResults.swift in Sources */,
 				FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */,
+				FA429DAD2A40D96600DF112D /* APIService.swift in Sources */,
+				FA429DB22A40DF7100DF112D /* PodcastCell.swift in Sources */,
 				FAAB4F632A3E0E8100453F57 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
