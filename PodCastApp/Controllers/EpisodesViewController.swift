@@ -13,16 +13,12 @@ class EpisodesViewController: UITableViewController {
     var podcast : Podcast?{
         didSet{
             navigationItem.title = podcast?.trackName
-            print("podCast : \(podcast?.feedUrl)")
+            fetchEpisodes()
         }
     }
     
     fileprivate let cellId = "cellId"
-    var episodes = [
-        Episode(title: "ep1"),
-        Episode(title: "ep2"),
-        Episode(title: "ep3")
-    ]
+    var episodes = [Episode]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +26,28 @@ class EpisodesViewController: UITableViewController {
     }
     
     fileprivate func fetchEpisodes(){
+        //guard let feedUrl = podcast?.feedUrl else { return }
+        guard let url = URL(string: podcast?.feedUrl ?? "") else { return }
+        let parser = FeedParser(URL: url)
+        parser?.parseAsync(result: { result in
+            print("successFully parsed : \(result.isSuccess)")
+            switch result {
+            case let .rss(feed):
+                feed.items?.forEach({ feedItem in
+                    self.episodes.append(Episode(title: feedItem.title ?? ""))
+                    //print("feed : \(feedItem.title ?? "")")
+                })
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                break
+            case let .failure(error):
+                print("Failed to parse feed :", error)
+                break
+            default:
+                print("Found a feed....")
+            }
+        })
         
     }
     
