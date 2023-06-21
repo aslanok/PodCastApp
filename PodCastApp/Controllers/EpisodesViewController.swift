@@ -17,7 +17,7 @@ class EpisodesViewController: UITableViewController {
         }
     }
     
-    fileprivate let cellId = "cellId"
+    fileprivate let cellId = "episodeCellId"
     var episodes = [Episode]()
 
     override func viewDidLoad() {
@@ -34,8 +34,7 @@ class EpisodesViewController: UITableViewController {
             switch result {
             case let .rss(feed):
                 feed.items?.forEach({ feedItem in
-                    self.episodes.append(Episode(title: feedItem.title ?? ""))
-                    //print("feed : \(feedItem.title ?? "")")
+                    self.episodes.append(Episode(feedItem: feedItem))
                 })
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -52,7 +51,7 @@ class EpisodesViewController: UITableViewController {
     }
     
     fileprivate func setUpTableView(){
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(EpisodeCell.self, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
     }
     
@@ -60,9 +59,19 @@ class EpisodesViewController: UITableViewController {
         return episodes.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 136
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        cell.textLabel?.text = episodes[indexPath.row].title
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? EpisodeCell else {
+            return UITableViewCell()
+        }
+        let episode = episodes[indexPath.row]
+        cell.setUp(episode: episode)
+        //cell.textLabel?.text = episodes[indexPath.row].title
+        //cell.textLabel?.numberOfLines = 0
+        //cell.textLabel?.text = (episode.title ?? "") + "\n" + (episode.pubDate?.description ?? "")
         return cell
     }
 
