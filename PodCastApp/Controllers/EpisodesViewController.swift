@@ -26,28 +26,14 @@ class EpisodesViewController: UITableViewController {
     }
     
     fileprivate func fetchEpisodes(){
-        //guard let feedUrl = podcast?.feedUrl else { return }
-        guard let url = URL(string: podcast?.feedUrl ?? "") else { return }
-        let parser = FeedParser(URL: url)
-        parser?.parseAsync(result: { result in
-            print("successFully parsed : \(result.isSuccess)")
-            switch result {
-            case let .rss(feed):
-                feed.items?.forEach({ feedItem in
-                    self.episodes.append(Episode(feedItem: feedItem))
-                })
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                break
-            case let .failure(error):
-                print("Failed to parse feed :", error)
-                break
-            default:
-                print("Found a feed....")
+        guard let feedUrl = podcast?.feedUrl else { return }
+        //guard let url = URL(string: podcast?.feedUrl ?? "") else { return }
+        APIService.shared.fetchEpisodes(feedUrl: feedUrl) { episodes in
+            self.episodes = episodes
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
-        })
-        
+        }
     }
     
     fileprivate func setUpTableView(){
@@ -69,10 +55,18 @@ class EpisodesViewController: UITableViewController {
         }
         let episode = episodes[indexPath.row]
         cell.setUp(episode: episode)
-        //cell.textLabel?.text = episodes[indexPath.row].title
-        //cell.textLabel?.numberOfLines = 0
-        //cell.textLabel?.text = (episode.title ?? "") + "\n" + (episode.pubDate?.description ?? "")
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episode = self.episodes[indexPath.row]
+        let window = UIApplication.shared.keyWindow
+        let redView = UIView()
+        redView.backgroundColor = .red
+        redView.frame = self.view.frame
+        window?.addSubview(redView)
+        
+    }
+    
 
 }

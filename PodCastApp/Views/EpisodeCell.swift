@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class EpisodeCell : UITableViewCell {
     
@@ -80,7 +81,8 @@ class EpisodeCell : UITableViewCell {
     
     func setUp(episode : Episode){
         dateFormatter.dateFormat = "MMMM dd, yyyy"
-        self.episodeImage.image = UIImage(named: "")
+        let imageUrl = URL(string: episode.imageUrl?.toSecureHTTPS() ?? "")
+        episodeImage.sd_setImage(with: imageUrl)
         self.titleLabel.text = episode.title
         self.descriptionLabel.text = episode.description
         self.pubDateLabel.text = dateFormatter.string(from: episode.pubDate ?? Date())
