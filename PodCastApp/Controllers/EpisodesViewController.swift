@@ -8,7 +8,7 @@
 import UIKit
 import FeedKit
 
-class EpisodesViewController: UITableViewController {
+class EpisodesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var podcast : Podcast?{
         didSet{
@@ -17,11 +17,19 @@ class EpisodesViewController: UITableViewController {
         }
     }
     
+    private lazy var episodeTableView : UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+
     fileprivate let cellId = "episodeCellId"
     var episodes = [Episode]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        episodeTableView.delegate = self
+        episodeTableView.dataSource = self
         setUpTableView()
     }
     
@@ -31,25 +39,30 @@ class EpisodesViewController: UITableViewController {
         APIService.shared.fetchEpisodes(feedUrl: feedUrl) { episodes in
             self.episodes = episodes
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.episodeTableView.reloadData()
             }
         }
     }
     
     fileprivate func setUpTableView(){
-        tableView.register(EpisodeCell.self, forCellReuseIdentifier: cellId)
-        tableView.tableFooterView = UIView()
+        view.addSubview(episodeTableView)
+        episodeTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        episodeTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        episodeTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        episodeTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        episodeTableView.register(EpisodeCell.self, forCellReuseIdentifier: cellId)
+        episodeTableView.tableFooterView = UIView()
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 136
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? EpisodeCell else {
             return UITableViewCell()
         }
@@ -58,14 +71,18 @@ class EpisodesViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
+        let viewController = PlayerDetailsViewController(episode: episode)
+        viewController.modalPresentationStyle = .fullScreen
+        present(viewController, animated: true)
+        /*
         let window = UIApplication.shared.keyWindow
         let redView = UIView()
         redView.backgroundColor = .red
         redView.frame = self.view.frame
         window?.addSubview(redView)
-        
+        */
     }
     
 
