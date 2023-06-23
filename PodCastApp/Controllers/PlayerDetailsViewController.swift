@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 
 class PlayerDetailsViewController: UIViewController {
     private var episode : Episode?
@@ -47,14 +48,86 @@ class PlayerDetailsViewController: UIViewController {
         return label
     }()
     
-    private lazy var authorName : UILabel = {
+    private lazy var authorNameLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Author"
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = UIColor.systemPurple
         return label
+    }()
+    
+    private lazy var topButtonStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
+        return stackView
+    }()
+    
+    private lazy var backWardButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "rewind15"), for: .normal)
+        return button
+    }()
+    
+    private lazy var forwardButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "forward15"), for: .normal)
+        return button
+    }()
+    
+    private lazy var playPauseButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "pause"), for: .normal)
+        return button
+    }()
+    
+    private lazy var mutedVolumeButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "muted_volume"), for: .normal)
+        return button
+    }()
+    
+    private lazy var maxVolumeButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "max_volume"), for: .normal)
+        return button
+    }()
+    
+    private lazy var volumeSlider : UISlider = {
+        let slider = UISlider()
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        return slider
+    }()
+    
+    private lazy var startTimeEpisodeLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "00:00:00"
+        label.textColor = .lightGray
+        return label
+    }()
+    
+    private lazy var endTimeEpisodeLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "88:88:88"
+        label.textColor = .lightGray
+        return label
+    }()
+    
+    private let player : AVPlayer = {
+        let avPlayer = AVPlayer()
+        avPlayer.automaticallyWaitsToMinimizeStalling = false
+        return avPlayer
     }()
     
     init(episode : Episode) {
@@ -71,16 +144,15 @@ class PlayerDetailsViewController: UIViewController {
         view.backgroundColor = .white
         setDefaults()
         setUpView()
+        playEpisode()
     }
     
     func setDefaults(){
         episodeTitle.text = episode?.title
+        authorNameLabel.text = episode?.author
         episodeImage.sd_setImage(with: URL(string: episode?.imageUrl ?? ""))
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func backButtonTapped(){
-        dismiss(animated: true)
+        playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
     }
     
     
@@ -107,18 +179,77 @@ class PlayerDetailsViewController: UIViewController {
         episodeSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         episodeSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
+        contentView.addSubview(startTimeEpisodeLabel)
+        startTimeEpisodeLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
+        startTimeEpisodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        
+        contentView.addSubview(endTimeEpisodeLabel)
+        endTimeEpisodeLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
+        endTimeEpisodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        
+        
         contentView.addSubview(episodeTitle)
-        episodeTitle.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 10).isActive = true
+        episodeTitle.topAnchor.constraint(equalTo: startTimeEpisodeLabel.bottomAnchor, constant: 10).isActive = true
         episodeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         episodeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
-        contentView.addSubview(authorName)
-        authorName.topAnchor.constraint(equalTo: episodeTitle.bottomAnchor, constant: 10).isActive = true
-        authorName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        authorName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        contentView.addSubview(authorNameLabel)
+        authorNameLabel.topAnchor.constraint(equalTo: episodeTitle.bottomAnchor, constant: 10).isActive = true
+        authorNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        authorNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
+        topButtonStackView.addArrangedSubview(backWardButton)
+        topButtonStackView.addArrangedSubview(playPauseButton)
+        topButtonStackView.addArrangedSubview(forwardButton)
+        
+        contentView.addSubview(topButtonStackView)
+        topButtonStackView.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor, constant: 40).isActive = true
+        topButtonStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        topButtonStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        topButtonStackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        contentView.addSubview(mutedVolumeButton)
+        mutedVolumeButton.topAnchor.constraint(equalTo: topButtonStackView.bottomAnchor, constant: 40).isActive = true
+        mutedVolumeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        mutedVolumeButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        mutedVolumeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        contentView.addSubview(maxVolumeButton)
+        maxVolumeButton.centerYAnchor.constraint(equalTo: mutedVolumeButton.centerYAnchor).isActive = true
+        maxVolumeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        maxVolumeButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        maxVolumeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        contentView.addSubview(volumeSlider)
+        volumeSlider.centerYAnchor.constraint(equalTo: mutedVolumeButton.centerYAnchor).isActive = true
+        volumeSlider.leadingAnchor.constraint(equalTo: mutedVolumeButton.trailingAnchor, constant: 10).isActive = true
+        volumeSlider.trailingAnchor.constraint(equalTo: maxVolumeButton.leadingAnchor, constant: -10).isActive = true
         
     }
+    
+    @objc func backButtonTapped(){
+        dismiss(animated: true)
+    }
+    
+    fileprivate func playEpisode(){
+        print("trying to play episode at url : \(episode?.streamUrl)")
+        guard let url = URL(string: episode?.streamUrl ?? "") else { return }
+        let playerItem = AVPlayerItem(url: url)
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
+    }
+    
+    @objc func handlePlayPause(){
+        if player.timeControlStatus == .paused {
+            player.play()
+            playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+        } else {
+            player.pause()
+            playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+        }
+    }
+    
+    
     
 
 }
