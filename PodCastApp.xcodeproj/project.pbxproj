@@ -25,6 +25,7 @@
 		FAAB4F752A3E105A00453F57 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */; };
 		FAAB4F782A3E5A2200453F57 /* PodcastSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */; };
 		FAAB4F7B2A3E5A8000453F57 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */; };
+		FADB62812A45A716002652FA /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB62802A45A716002652FA /* CMTime.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		FAAB4F742A3E105A00453F57 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastSearchController.swift; sourceTree = "<group>"; };
 		FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
+		FADB62802A45A716002652FA /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			children = (
 				FA9861192A439553003461EB /* String.swift */,
 				FA98611B2A439D36003461EB /* RSSFeed.swift */,
+				FADB62802A45A716002652FA /* CMTime.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */,
 				FA98611C2A439D36003461EB /* RSSFeed.swift in Sources */,
 				FAAB4F7B2A3E5A8000453F57 /* Podcast.swift in Sources */,
+				FADB62812A45A716002652FA /* CMTime.swift in Sources */,
 				FAAB4F612A3E0E8100453F57 /* AppDelegate.swift in Sources */,
 				FA9861172A438744003461EB /* EpisodeCell.swift in Sources */,
 				FA0BE3FA2A40FED400B9E9BB /* Episode.swift in Sources */,

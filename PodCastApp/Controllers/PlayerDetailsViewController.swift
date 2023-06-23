@@ -10,6 +10,7 @@ import AVKit
 
 class PlayerDetailsViewController: UIViewController {
     private var episode : Episode?
+    fileprivate let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
     
     private lazy var contentView : UIView = {
         let view = UIView()
@@ -30,12 +31,17 @@ class PlayerDetailsViewController: UIViewController {
     private lazy var episodeImage : UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
+        imageView.transform = shrunkenTransform
         return imageView
     }()
     
     private lazy var episodeSlider : UISlider = {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = 1
+        slider.minimumValue = 0
         return slider
     }()
     
@@ -68,23 +74,26 @@ class PlayerDetailsViewController: UIViewController {
     }()
     
     private lazy var backWardButton : UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "rewind15"), for: .normal)
+        button.tintColor = UIColor.black
         return button
     }()
     
     private lazy var forwardButton : UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "forward15"), for: .normal)
+        button.tintColor = UIColor.black
         return button
     }()
     
     private lazy var playPauseButton : UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "pause"), for: .normal)
+        button.tintColor = UIColor.black
         return button
     }()
     
@@ -108,7 +117,7 @@ class PlayerDetailsViewController: UIViewController {
         return slider
     }()
     
-    private lazy var startTimeEpisodeLabel : UILabel = {
+    private lazy var currentTimeLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "00:00:00"
@@ -116,7 +125,7 @@ class PlayerDetailsViewController: UIViewController {
         return label
     }()
     
-    private lazy var endTimeEpisodeLabel : UILabel = {
+    private lazy var durationLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "88:88:88"
@@ -124,7 +133,7 @@ class PlayerDetailsViewController: UIViewController {
         return label
     }()
     
-    private let player : AVPlayer = {
+    let player : AVPlayer = {
         let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
         return avPlayer
@@ -137,6 +146,39 @@ class PlayerDetailsViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func obersvePlayerCurrentTime() {
+        let interval = CMTimeMake(value: 1, timescale: 2)
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+            self.currentTimeLabel.text = time.toDisplayString()
+            let durationTime = self.player.currentItem?.duration
+            self.durationLabel.text = durationTime?.toDisplayString()
+            self.updateEpisodeSlider()
+        }
+    }
+    
+    fileprivate func updateEpisodeSlider(){
+        let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+        let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1))
+        let percentage = currentTimeSeconds / durationSeconds
+        self.episodeSlider.value = Float(percentage)
+        
+        
+        
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        obersvePlayerCurrentTime()
+        
+        
+        let time = CMTimeMake(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.enlargeEpisodeImageView()
+        }
     }
     
     override func viewDidLoad() {
@@ -179,17 +221,16 @@ class PlayerDetailsViewController: UIViewController {
         episodeSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         episodeSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
-        contentView.addSubview(startTimeEpisodeLabel)
-        startTimeEpisodeLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
-        startTimeEpisodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        contentView.addSubview(currentTimeLabel)
+        currentTimeLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
+        currentTimeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         
-        contentView.addSubview(endTimeEpisodeLabel)
-        endTimeEpisodeLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
-        endTimeEpisodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        
+        contentView.addSubview(durationLabel)
+        durationLabel.topAnchor.constraint(equalTo: episodeSlider.bottomAnchor, constant: 5).isActive = true
+        durationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
         contentView.addSubview(episodeTitle)
-        episodeTitle.topAnchor.constraint(equalTo: startTimeEpisodeLabel.bottomAnchor, constant: 10).isActive = true
+        episodeTitle.topAnchor.constraint(equalTo: currentTimeLabel.bottomAnchor, constant: 10).isActive = true
         episodeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         episodeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
@@ -231,6 +272,18 @@ class PlayerDetailsViewController: UIViewController {
         dismiss(animated: true)
     }
     
+    fileprivate func enlargeEpisodeImageView(){
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImage.transform = .identity
+        })
+    }
+    
+    fileprivate func shrinkEpisodeImageView(){
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImage.transform = self.shrunkenTransform
+        })
+    }
+    
     fileprivate func playEpisode(){
         print("trying to play episode at url : \(episode?.streamUrl)")
         guard let url = URL(string: episode?.streamUrl ?? "") else { return }
@@ -243,9 +296,11 @@ class PlayerDetailsViewController: UIViewController {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            shrinkEpisodeImageView()
         }
     }
     
