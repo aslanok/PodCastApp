@@ -26,6 +26,7 @@
 		FAAB4F782A3E5A2200453F57 /* PodcastSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */; };
 		FAAB4F7B2A3E5A8000453F57 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */; };
 		FADB62812A45A716002652FA /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB62802A45A716002652FA /* CMTime.swift */; };
+		FADB62832A45E203002652FA /* PlayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB62822A45E203002652FA /* PlayerDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		FAAB4F772A3E5A2200453F57 /* PodcastSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastSearchController.swift; sourceTree = "<group>"; };
 		FAAB4F7A2A3E5A8000453F57 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 		FADB62802A45A716002652FA /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
+		FADB62822A45E203002652FA /* PlayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				FA429DB12A40DF7100DF112D /* PodcastCell.swift */,
 				FA9861162A438744003461EB /* EpisodeCell.swift */,
+				FADB62822A45E203002652FA /* PlayerDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 			files = (
 				FA0BE3F82A40F9E600B9E9BB /* EpisodesViewController.swift in Sources */,
 				FA98611A2A439553003461EB /* String.swift in Sources */,
+				FADB62832A45E203002652FA /* PlayerDetailView.swift in Sources */,
 				FAAB4F782A3E5A2200453F57 /* PodcastSearchController.swift in Sources */,
 				FAAB4F652A3E0E8100453F57 /* ViewController.swift in Sources */,
 				FA98611C2A439D36003461EB /* RSSFeed.swift in Sources */,

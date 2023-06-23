@@ -54,6 +54,17 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         episodeTableView.tableFooterView = UIView()
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activitiyIndicatorView = UIActivityIndicatorView(style: .large)
+        activitiyIndicatorView.color = .darkGray
+        activitiyIndicatorView.startAnimating()
+        return activitiyIndicatorView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return episodes.isEmpty ? 200 : 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }

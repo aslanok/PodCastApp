@@ -15,6 +15,7 @@ class PodcastSearchController : UITableViewController, UISearchBarDelegate {
     let cellId = "PodcastCell"
     
     let searchController = UISearchController(searchResultsController: nil)
+    var timer : Timer?
     
     
     override func viewDidLoad() {
@@ -37,10 +38,13 @@ class PodcastSearchController : UITableViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        APIService.shared.fetchPodcasts(searchText: searchText) { podcastList in
-            self.podcasts = podcastList
-            self.tableView.reloadData()
-        }
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { timer in
+            APIService.shared.fetchPodcasts(searchText: searchText) { podcastList in
+                self.podcasts = podcastList
+                self.tableView.reloadData()
+            }
+        })
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

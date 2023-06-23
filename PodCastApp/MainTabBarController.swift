@@ -16,6 +16,26 @@ class MainTabBarController : UITabBarController {
         UINavigationBar.appearance().prefersLargeTitles = true
         
         setUpViewControllers()
+        
+        setUpPlayerDetailsView()
+    }
+    
+    fileprivate func setUpPlayerDetailsView(){
+        print("setting up playerDetailsView")
+        let playerDetailView = PlayerDetailView()
+        playerDetailView.backgroundColor = .red
+        
+        //view.addSubview(playerDetailView)
+        view.insertSubview(playerDetailView, belowSubview: tabBar)
+        
+        playerDetailView.translatesAutoresizingMaskIntoConstraints = false
+        playerDetailView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: -64).isActive = true
+        playerDetailView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        playerDetailView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        playerDetailView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        
+        
     }
     
     func setUpViewControllers(){
