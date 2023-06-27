@@ -42,7 +42,7 @@ class PlayerDetailView : UIView {
         contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
-        backButton = UIButton()
+        backButton = UIButton(type : .system)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.setTitle("Dismiss", for: .normal)
         backButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
@@ -182,6 +182,11 @@ class PlayerDetailView : UIView {
         volumeSlider.leadingAnchor.constraint(equalTo: mutedVolumeButton.trailingAnchor, constant: 10).isActive = true
         volumeSlider.trailingAnchor.constraint(equalTo: maxVolumeButton.leadingAnchor, constant: -10).isActive = true
         
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func backButtonTapped(){
+        self.removeFromSuperview()
     }
     
     

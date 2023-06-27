@@ -85,7 +85,9 @@ class PlayerDetailsViewController: UIViewController {
     }
     
     @objc func backButtonTapped(){
-        dismiss(animated: true)
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.minimizePlayerDetails()
+        //dismiss(animated: true)
     }
     
     fileprivate func enlargeEpisodeImageView(){
@@ -101,7 +103,6 @@ class PlayerDetailsViewController: UIViewController {
     }
     
     fileprivate func playEpisode(){
-        print("trying to play episode at url : \(episode?.streamUrl)")
         guard let url = URL(string: episode?.streamUrl ?? "") else { return }
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
