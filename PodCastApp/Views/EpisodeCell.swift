@@ -72,7 +72,6 @@ class EpisodeCell : UITableViewCell {
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
         //descriptionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
     }
     
     required init?(coder: NSCoder) {

@@ -5,8 +5,9 @@
 //  Created by MacBook on 23.06.2023.
 //
 
-import Foundation
 import UIKit
+import AVKit
+
 
 class PlayerDetailView : UIView {
     
@@ -25,11 +26,81 @@ class PlayerDetailView : UIView {
     internal var volumeSlider : UISlider!
     internal var currentTimeLabel : UILabel!
     internal var durationLabel : UILabel!
+
+    internal lazy var minimizeContentView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .lightGray
+        return view
+    }()
     
+    internal lazy var minimizeStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    internal lazy var minimizeImageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appicon")
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    internal lazy var minimizeEpisodeTitle : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Episode Title"
+        label.font = UIFont.systemFont(ofSize: 15)
+        return label
+    }()
+    
+    internal lazy var minimizePausePlayButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "pause"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        return button
+    }()
+    
+    internal lazy var minimizeForwardButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "forward15"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    let player : AVPlayer = {
+        let avPlayer = AVPlayer()
+        avPlayer.automaticallyWaitsToMinimizeStalling = false
+        return avPlayer
+    }()
     internal let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+    
+    var episode : Episode? {
+        didSet{
+            minimizeEpisodeTitle.text = episode?.title
+            episodeTitle.text = episode?.title
+            authorNameLabel.text = episode?.author
+            episodeImage.sd_setImage(with: URL(string: episode?.imageUrl ?? ""))
+            minimizeImageView.sd_setImage(with: URL(string: episode?.imageUrl ?? ""))
+            playEpisode()
+        }
+    }
     
     init(){
         super.init(frame: .zero)
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize))
+        self.addGestureRecognizer(gestureRecognizer)
         loadView()
     }
     
@@ -37,7 +108,72 @@ class PlayerDetailView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        
+    }
+    
+    fileprivate func playEpisode(){
+        guard let url = URL(string: episode?.streamUrl ?? "") else { return }
+        let playerItem = AVPlayerItem(url: url)
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
+    }
+    
     func loadView(){
+        setUpView()
+        
+        observePlayerCurrentTime()
+        
+        let time = CMTimeMake(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.enlargeEpisodeImageView()
+        }
+        
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        episodeSlider.addTarget(self, action: #selector(handleCurrentTimeSliderChange), for: .valueChanged)
+        backWardButton.addTarget(self, action: #selector(handleRewind), for: .touchUpInside)
+        forwardButton.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
+        volumeSlider.addTarget(self, action: #selector(handleVolumeChange(_:)), for: .valueChanged)
+        
+        
+    }
+
+    fileprivate func observePlayerCurrentTime() {
+        let interval = CMTimeMake(value: 1, timescale: 2)
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            // weak self koymadan önce ekranı kapatınca ses akmaya devam ediyordu ama şimdi ses artık akmıyor
+            // weak self koyduğumuzda sayfa kaybolunca burdaki referanslar da kayboluyor
+            self?.currentTimeLabel.text = time.toDisplayString()
+            let durationTime = self?.player.currentItem?.duration
+            self?.durationLabel.text = durationTime?.toDisplayString()
+            self?.updateEpisodeSlider()
+        }
+    }
+    
+    fileprivate func updateEpisodeSlider(){
+        let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+        let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1))
+        let percentage = currentTimeSeconds / durationSeconds
+        episodeSlider.value = Float(percentage)
+    }
+    
+    fileprivate func enlargeEpisodeImageView(){
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImage.transform = .identity
+        })
+    }
+    
+    fileprivate func shrinkEpisodeImageView(){
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImage.transform = self.shrunkenTransform
+        })
+    }
+
+    func setUpView(){
         self.backgroundColor = .white
         contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +239,7 @@ class PlayerDetailView : UIView {
         
         volumeSlider = UISlider()
         volumeSlider.translatesAutoresizingMaskIntoConstraints = false
+        volumeSlider.value = 0.5
         
         currentTimeLabel = UILabel()
         currentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -114,6 +251,27 @@ class PlayerDetailView : UIView {
         durationLabel.text = "88:88:88"
         durationLabel.textColor = .lightGray
         
+        self.addSubview(minimizeContentView)
+        minimizeContentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        minimizeContentView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        minimizeContentView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        minimizeContentView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        
+        
+        minimizeImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        minimizePausePlayButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        minimizeForwardButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        
+        minimizeStackView.addArrangedSubview(minimizeImageView)
+        minimizeStackView.addArrangedSubview(minimizeEpisodeTitle)
+        minimizeStackView.addArrangedSubview(minimizePausePlayButton)
+        minimizeStackView.addArrangedSubview(minimizeForwardButton)
+        
+        minimizeContentView.addSubview(minimizeStackView)
+        minimizeStackView.centerYAnchor.constraint(equalTo: minimizeContentView.centerYAnchor).isActive = true
+        minimizeStackView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        minimizeStackView.leadingAnchor.constraint(equalTo: minimizeContentView.leadingAnchor, constant: 8).isActive = true
+        minimizeStackView.trailingAnchor.constraint(equalTo: minimizeContentView.trailingAnchor, constant: -8).isActive = true
         
         self.addSubview(contentView)
         contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24).isActive = true
@@ -181,14 +339,59 @@ class PlayerDetailView : UIView {
         volumeSlider.centerYAnchor.constraint(equalTo: mutedVolumeButton.centerYAnchor).isActive = true
         volumeSlider.leadingAnchor.constraint(equalTo: mutedVolumeButton.trailingAnchor, constant: 10).isActive = true
         volumeSlider.trailingAnchor.constraint(equalTo: maxVolumeButton.leadingAnchor, constant: -10).isActive = true
-        
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 
     @objc func backButtonTapped(){
-        self.removeFromSuperview()
+        // self.removeFromSuperview()
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.minimizePlayerDetails()
     }
     
+    @objc func handlePlayPause(){
+        if player.timeControlStatus == .paused {
+            player.play()
+            playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            minimizePausePlayButton.setImage(UIImage(named: "pause"), for: .normal)
+            enlargeEpisodeImageView()
+        } else {
+            player.pause()
+            playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            minimizePausePlayButton.setImage(UIImage(named: "play"), for: .normal)
+            shrinkEpisodeImageView()
+        }
+    }
+    
+    @objc func handleTapMaximize(){
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetails(episode: nil)
+    }
+    
+    @objc func handleCurrentTimeSliderChange(){
+        let percentage = episodeSlider.value
+        guard let duration = player.currentItem?.duration else { return }
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
+        player.seek(to: seekTime)
+    }
+    
+    @objc func handleFastForward(){
+        seekToCurrentTime(delta: 15)
+    }
+    
+    @objc func handleRewind(){
+        seekToCurrentTime(delta: -15)
+    }
+    
+    fileprivate func seekToCurrentTime(delta : Int64){
+        let seconds = CMTimeMake(value: delta, timescale: 1)
+        let seekTime = CMTimeAdd(player.currentTime(), seconds)
+        player.seek(to: seekTime)
+    }
+
+    @objc func handleVolumeChange(_ sender : UISlider){
+        player.volume = sender.value
+    }
     
     
 }

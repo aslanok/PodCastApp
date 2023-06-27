@@ -10,7 +10,6 @@ import AVKit
 
 class PlayerDetailsViewController: UIViewController {
     private var episode : Episode?
-        
     
     internal var mainView : PlayerDetailView{
         return self.view as! PlayerDetailView

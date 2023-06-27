@@ -84,16 +84,16 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
-        let viewController = PlayerDetailsViewController(episode: episode)
-        viewController.modalPresentationStyle = .fullScreen
-        present(viewController, animated: true)
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetails(episode: episode)
         /*
+        let episode = self.episodes[indexPath.row]
+        let playerDetailView = PlayerDetailView()
+        playerDetailView.frame = self.view.frame
+        playerDetailView.episode = episode
         let window = UIApplication.shared.keyWindow
-        let redView = UIView()
-        redView.backgroundColor = .red
-        redView.frame = self.view.frame
-        window?.addSubview(redView)
-        */
+        window?.addSubview(playerDetailView)
+         */
     }
     
 
