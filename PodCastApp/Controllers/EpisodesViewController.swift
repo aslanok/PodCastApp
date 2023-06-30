@@ -85,15 +85,8 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        mainTabBarController?.maximizePlayerDetails(episode: episode)
-        /*
-        let episode = self.episodes[indexPath.row]
-        let playerDetailView = PlayerDetailView()
-        playerDetailView.frame = self.view.frame
-        playerDetailView.episode = episode
-        let window = UIApplication.shared.keyWindow
-        window?.addSubview(playerDetailView)
-         */
+        mainTabBarController?.maximizePlayerDetails(episode: episode, playlistEpisodes : self.episodes)
+        
     }
     
 
