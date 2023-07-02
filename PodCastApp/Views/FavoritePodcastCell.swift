@@ -10,6 +10,15 @@ import UIKit
 
 class FavoritePodcastCell : UICollectionViewCell{
     
+    var podcast : Podcast! {
+        didSet{
+            nameLabel.text = podcast.trackName
+            artistNameLabel.text = podcast.artistName
+            let url = URL(string: podcast.artworkUrl60 ?? "")
+            podcastImageView.sd_setImage(with: url)
+        }
+    }
+    
     private lazy var podcastImageView : UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false

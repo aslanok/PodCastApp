@@ -13,7 +13,7 @@ class Podcast : NSObject, Decodable, NSCoding {
         coder.encode(trackName ?? "", forKey: "trackNameKey")
         coder.encode(artistName ?? "", forKey: "artistNameKey")
         coder.encode(artworkUrl60 ?? "", forKey: "artworkKey")
-
+        coder.encode(feedUrl ?? "", forKey: "feedKey")
     }
     
     required init?(coder: NSCoder) {
@@ -21,6 +21,7 @@ class Podcast : NSObject, Decodable, NSCoding {
         self.trackName = coder.decodeObject(forKey: "trackNameKey") as? String
         self.artistName = coder.decodeObject(forKey: "artistNameKey") as? String
         self.artworkUrl60 = coder.decodeObject(forKey: "artworkKey") as? String
+        self.feedUrl = coder.decodeObject(forKey: "feedKey") as? String
     }
     
     let trackName : String?
