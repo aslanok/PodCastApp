@@ -52,8 +52,6 @@ class FavoritePodcastCell : UICollectionViewCell{
         
         setUpViews()
         
-        
-        
     }
     
     required init?(coder: NSCoder) {
