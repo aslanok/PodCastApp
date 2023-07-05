@@ -13,8 +13,25 @@ class APIService {
     
     let baseiTunesSearchURL = "https://itunes.apple.com/search"
 
-    
     static let shared = APIService()
+    
+    func downloadEpisode(episode : Episode){
+        let downloadRequest = DownloadRequest.suggestedDownloadDestination()
+        Alamofire.download(episode.streamUrl, to: downloadRequest).downloadProgress { progress in
+        }.response { resp in
+            var downloadedEpisodes = UserDefaults.standard.downloadedEpisodes()
+            guard let index = downloadedEpisodes.firstIndex(where: { $0.title == episode.title && $0.author == episode.author }) else { return }
+            print("file : \(resp.destinationURL?.absoluteString ?? "")")
+            downloadedEpisodes[index].fileUrl = resp.destinationURL?.absoluteString ?? ""
+            do{
+                let data = try JSONEncoder().encode(downloadedEpisodes)
+                UserDefaults.standard.set(data, forKey: UserDefaults.downloadEpisodesKey)
+            } catch let err {
+                print("failed to encode downloaded episodes with file url update :\(err)")
+            }
+        }
+    }
+    
     
     func fetchEpisodes(feedUrl : String, completionHandler : @escaping ([Episode]) -> ()){
         

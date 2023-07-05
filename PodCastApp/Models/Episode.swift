@@ -8,7 +8,7 @@
 import Foundation
 import FeedKit
 
-struct Episode {
+struct Episode : Encodable, Decodable {
     let title : String?
     let pubDate : Date?
     let description : String?
@@ -16,6 +16,8 @@ struct Episode {
     let author : String
     let streamUrl : String
     
+    var fileUrl : String?
+
     init(feedItem : RSSFeedItem) {
         self.streamUrl = feedItem.enclosure?.attributes?.url ?? ""
         self.title = feedItem.title ?? ""

@@ -125,5 +125,14 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let item = UIContextualAction(style: .destructive, title: "Download") { _, _, _ in
+            let episode = self.episodes[indexPath.row]
+            UserDefaults.standard.downloadEpisode(episode: episode)
+            APIService.shared.downloadEpisode(episode: episode)
+        }
+        let swipeActions = UISwipeActionsConfiguration(actions: [item])
+        return swipeActions
+    }
 
 }
