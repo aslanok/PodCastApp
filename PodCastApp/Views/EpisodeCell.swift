@@ -46,12 +46,24 @@ class EpisodeCell : UITableViewCell {
         return label
     }()
     
+    var progressLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 30)
+        label.shadowColor = .black
+        label.text = "100%"
+        label.isHidden = true
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(episodeImage)
         contentView.addSubview(pubDateLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
+        contentView.addSubview(progressLabel)
         
         episodeImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         episodeImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
@@ -72,6 +84,9 @@ class EpisodeCell : UITableViewCell {
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
         //descriptionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        progressLabel.centerYAnchor.constraint(equalTo: episodeImage.centerYAnchor).isActive = true
+        progressLabel.centerXAnchor.constraint(equalTo: episodeImage.centerXAnchor).isActive = true
+        
     }
     
     required init?(coder: NSCoder) {
